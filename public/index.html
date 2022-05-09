@@ -1,72 +1,73 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <title>Document</title>
-</head>
-<body>
-<div id = "reg">
-    <label for="userName"></label>
-    <input type="text" id="userName">
-    <button id="btn">add</button>
-</div>
-<div id = "sendText">
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+<!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+<!--    <title>Document</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id = "reg">-->
+<!--    <label for="userName"></label>-->
+<!--    <input type="text" id="userName">-->
+<!--    <button id="btn">add</button>-->
+<!--</div>-->
+<!--<div id = "sendText">-->
 
-</div>
-</body>
-</html>
-<script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
-<script>
-    var id;
-    // 连接服务端
-    var socket = io('http://127.0.0.1:3120');
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+<!--<script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>-->
+<!--<script>-->
+<!--    var id;-->
+<!--    // 连接服务端-->
+<!--    var socket = io('http://127.0.0.1:3120');-->
 
-    $('#btn').click(function () {
-        socket.emit('add user', $('#userName').val());
-        //alert($('#userName').val());
-    });
+<!--    $('#btn').click(function () {-->
+<!--        socket.emit('add user', $('#userName').val());-->
+<!--        //alert($('#userName').val());-->
+<!--    });-->
 
-    socket.on('confirm user',function ($msg) {
-        if ($msg.confirm) {
-            $('#reg').remove();
-            append = `
-                <span>你好哦！` + $msg.name + `</span>
-                <input type="text" id="sendMsg">
-                <button id="btntext1">send</button>
-            `;
-            $('#sendText').append(append)
-            // socket.emit('new message',"hhhhddd");
-        }
+<!--    socket.on('confirm user',function ($msg) {-->
+<!--        if ($msg.confirm) {-->
+<!--            $('#reg').remove();-->
+<!--            append = `-->
+<!--                <span>你好哦！` + $msg.name + `</span>-->
+<!--                <input type="text" id="sendMsg">-->
+<!--                <button id="btntext1">send</button>-->
+<!--            `;-->
+<!--            $('#sendText').append(append)-->
+<!--            // socket.emit('new message',"hhhhddd");-->
+<!--        }-->
 
-    })
+<!--    })-->
 
-    // $('#btntext1').click(function () {
-    //     console.log(123)
-    //     alert(123)
-    //     $value = $('#sendMsg').val();
-    //     alert($value)
-    //     if ($value !== '') {
-    //         socket.emit('new message',$value);
-    //     }
-    // });
-    $(document).on("click", '#btntext1', function(){
-        $value = $('#sendMsg').val();
-        if ($value !== '') {
-            socket.emit('new message',$value);
-        }
-    })
+<!--    // $('#btntext1').click(function () {-->
+<!--    //     console.log(123)-->
+<!--    //     alert(123)-->
+<!--    //     $value = $('#sendMsg').val();-->
+<!--    //     alert($value)-->
+<!--    //     if ($value !== '') {-->
+<!--    //         socket.emit('new message',$value);-->
+<!--    //     }-->
+<!--    // });-->
+<!--    $(document).on("click", '#btntext1', function(){-->
+<!--        $value = $('#sendMsg').val();-->
+<!--        if ($value !== '') {-->
+<!--            socket.emit('new message',$value);-->
+<!--        }-->
+<!--    })-->
 
-    socket.on('show message',function ($msg) {
-        var append = '<div>'+$msg+'</div>'
-        $('body').append(append)
-    })
+<!--    socket.on('show message',function ($msg) {-->
+<!--        var append = '<div>'+$msg+'</div>'-->
+<!--        $('body').append(append)-->
+<!--    })-->
 
-    socket.on('add error', function ($msg){
-        alert($msg)
-    })
+<!--    socket.on('add error', function ($msg){-->
+<!--        alert($msg)-->
+<!--    })-->
 
-</script>
+<!--</script>-->
+123
