@@ -22,6 +22,7 @@ $io->on('connection', function($socket)use($io){
         $socket->addedUser = true;
         $socket->name = $name;
         $socket->emit('confirm user',['confirm'=>true, 'name' => $name]);
+        $io->emit('show message', "{$name}来了");
     });
 
     $socket->on('see user', function ($msg) use($io) {
