@@ -1,0 +1,19 @@
+{
+    "name": "hanggege/heila",
+    "description": "ddd",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "laotang"
+        }
+    ],
+    "require": {
+        "workerman/workerman": "^4.0",
+        "workerman/phpsocket.io": "^1.1"
+    }
+}
