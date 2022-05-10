@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+    </style>
+</head>
+<body>
+<div id = "reg">
+    <label for="userName"></label>
+    <input type="text" id="userName">
+    <button id="btn">add</button>
+</div>
+<div id ="ban" style="width: 1000px;height: 600px;"></div>
+</body>
+</html>
+<script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
+<script>
+    var id;
+    // 连接服务端
+    var userName;
+    var socket = io('http://127.0.0.1:3120');
+    $('#btn').click(function () {
+        userName = $('#userName').val()
+        socket.emit('add user', userName);
+        //alert($('#userName').val());
+    });
+
+    socket.on('confirm user',function ($msg) {
+        if ($msg.confirm) {
+            $('#reg').remove();
+
+            $.each($msg.data,function(k,v){
+                drawUser(v.name,v.left,v.top)
+            })
+            $(document).keyup(function(event) {
+                if(event.keyCode == 37){
+                    toLeft($msg.name);
+                }else if (event.keyCode == 39){
+                    toRight($msg.name);
+                }else if (event.keyCode == 38){
+                    toUp($msg.name);
+                }else if (event.keyCode == 40){
+                    toDown($msg.name);
+                }
+            });
+        }
+    })
+    socket.on('add error', function ($msg){
+        alert($msg)
+    })
+
+    function toLeft(a)
+    {
+        goleft = $('#ball-'+a).css('left');
+        gotop = parseInt($('#ball-'+a).css('top'));
+        res = parseInt(goleft) - 10;
+        msg = {'name':a, 'direct':'left', 'mudi': res, 'other': gotop}
+        update(msg)
+    }
+    function toRight(a)
+    {
+        goleft = $('#ball-'+a).css('left');
+        gotop = parseInt($('#ball-'+a).css('top'));
+        res = parseInt(goleft) + 10;
+        msg = {'name':a, 'direct':'left', 'mudi': res, 'other': gotop}
+        update(msg)
+    }
+    function toUp(a)
+    {
+        gotop = $('#ball-'+a).css('top');
+        goleft = parseInt($('#ball-'+a).css('left'));
+        res = parseInt(gotop) - 10;
+        msg = {'name':a, 'direct':'top', 'mudi': res, 'other': goleft}
+        update(msg)
+    }
+    function toDown(a)
+    {
+        gotop = $('#ball-'+a).css('top');
+        goleft = parseInt($('#ball-'+a).css('left'));
+        res = parseInt(gotop) + 10;
+        msg = {'name':a, 'direct':'top', 'mudi': res, 'other': goleft}
+        update(msg)
+    }
+    function update(msg)
+    {
+        socket.emit('user move', msg);
+    }
+
+    function drawUser(name, left, top)
+    {
+        append = "<div id='ball-"+name+"' style='height: 20px;width: 20px;background: pink;border-radius: 50%;position: absolute;left:"+left+"px;top: "+top+"px; '>"+name+"</div>"
+        $('#ban').append(append)
+    }
+
+    socket.on('all move', function ($msg){
+        if ($msg.direct === 'left') {
+            $('#ball-'+$msg.name).animate({'left':$msg.mudi + 'px'});
+        }
+        if ($msg.direct === 'top') {
+            $('#ball-'+$msg.name).animate({'top':$msg.mudi + 'px'});
+        }
+    })
+
+    socket.on('add new user', function ($msg) {
+        append = "<div id='ball-"+$msg.name+"' style='height: 20px;width: 20px;background: pink;border-radius: 50%;position: absolute;left:"+$msg.left+"px;top: "+$msg.top+"px; '>$msg.name</div>"
+        $('#ban').append(append)
+    })
+
+    socket.on('remove leave user', function ($msg) {
+        //append = "<div id='ball-"+$msg.name+"' style='height: 20px;width: 20px;background: pink;border-radius: 50%;position: absolute;left:"+$msg.left+"px;top: "+$msg.top+"px; '></div>"
+        $('#ball-' + $msg).remove();
+    })
+</script>
