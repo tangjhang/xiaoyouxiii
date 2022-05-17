@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="static/js/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<div id = "reg">
+    <label for="userName"></label>
+    <input type="text" id="userName">
+    <button id="btn">add</button>
+</div>
+<div id = "sendText">
+
+</div>
+</body>
+</html>
+<script src='static/js/socket.io.js'></script>
+<script>
+    var id;
+    // 连接服务端
+    var socket = io('http://127.0.0.1:3120');
+
+    $('#btn').click(function () {
+        socket.emit('add user', $('#userName').val());
+        //alert($('#userName').val());
+    });
+
+    socket.on('confirm user',function ($msg) {
+
+            $('#reg').remove();
+            append = `
+                <input type="text" id="sendMsg">
+                <input type="text" id="toId">
+                <input type="hidden" id="fromId" value="`+$msg+`">
+                <button id="btntext1">send</button>
+                <button id="btntext2">sends</button>
+            `;
+            $('#sendText').append(append)
+            // socket.emit('new message',"hhhhddd");
+
+
+    })
+
+    // $('#btntext1').click(function () {
+    //     console.log(123)
+    //     alert(123)
+    //     $value = $('#sendMsg').val();
+    //     alert($value)
+    //     if ($value !== '') {
+    //         socket.emit('new message',$value);
+    //     }
+    // });
+    $(document).on("click", '#btntext1', function(){
+        $value = $('#sendMsg').val();
+        if ($value !== '') {
+            msg = {
+                'fromId': $('#fromId').val(),
+                'toId': $('#toId').val(),
+                'msg': $value
+            }
+            socket.emit('send user',msg);
+        }
+    })
+    $(document).on("click", '#btntext2', function(){
+        $value = $('#sendMsg').val();
+        if ($value !== '') {
+            socket.emit('guangbo user',$value);
+        }
+    })
+
+    socket.on('receive user',function ($msg) {
+        var append = '<div>'+$msg.theId +':'+ $msg.mess+'</div>'
+        $('body').append(append)
+    })
+
+    //广播
+    socket.on('get guangbo',function ($msg) {
+        var append = '<div>'+ $msg+'</div>'
+        $('body').append(append)
+    })
+</script>

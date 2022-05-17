@@ -42,5 +42,5 @@ use PHPSocketIO\SocketIO;
 //});
 
 require_once "start_web.php";
-require_once "start_io2.php";
+require_once "start_io3.php";
 Worker::runAll();

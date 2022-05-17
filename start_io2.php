@@ -3,7 +3,7 @@ require_once "Person.php";
 use Workerman\Worker;
 use PHPSocketIO\SocketIO;
 
-
+//小球移动
 $io = new SocketIO(3120);
 // 当有客户端连接时
 $io->user = [];

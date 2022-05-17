@@ -13,7 +13,7 @@ define('WEBROOT', __DIR__ . DIRECTORY_SEPARATOR .  'public');
 $web->onMessage = function (TcpConnection $connection, Request $request) {
     $path = $request->path();
     if ($path === '/') {
-        $connection->send(exec_php_file(WEBROOT.'/index2.html'));
+        $connection->send(exec_php_file(WEBROOT.'/index3.html'));
         return;
     }
     $file = realpath(WEBROOT. $path);
